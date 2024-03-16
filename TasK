@@ -1,0 +1,243 @@
+use task_2;
+select * from accounts;
+select * from clicks;
+select * from products;
+select * from salespipeline;
+select * from sales_team;
+
+-- 1 ---------------------------------------------------
+select * from accounts;
+
+#aggregate function
+-- Question: Find the total number of accounts and the average revenue.
+SELECT COUNT(*) AS TotalAccounts, AVG(Revenue) AS AvgRevenue FROM accounts;
+
+
+#Filter with WHERE
+-- Question: Show accounts with more than 100 employees.
+SELECT * FROM accounts WHERE Employees > 100;
+
+
+#Order By
+-- Question: Display accounts ordered by revenue in descending order.
+SELECT * FROM accounts ORDER BY Revenue DESC;
+
+
+#Group By
+-- Question: Calculate the average revenue for each employee group.
+SELECT Employees, AVG(Revenue) AS AvgRevenue FROM accounts GROUP BY Employees;
+
+
+#roolup
+-- Question: Provide a rollup of average revenue based on employee count and overall.
+SELECT Employees, AVG(Revenue) AS AvgRevenue FROM accounts GROUP BY ROLLUP(Employees);
+
+
+#Having Clause
+-- Question: Show employee counts with average revenue greater than 5000.
+SELECT Employees, AVG(Revenue) AS AvgRevenue
+FROM accounts GROUP BY Employees HAVING AVG(Revenue) > 5000;
+
+
+#Case Statement:
+-- Question: Categorize accounts as 'High' or 'Low' based on revenue.
+SELECT Account, CASE WHEN Revenue > 1000000 THEN 'High' ELSE 'Low' 
+END AS RevenueCategory FROM account;
+
+
+#Union Operator:
+-- Question: Combine accounts with more than 500 employees and those with 500 or fewer employees.
+SELECT Account, Revenue FROM accounts WHERE Employees > 500
+UNION
+SELECT Account, Revenue FROM accounts WHERE Employees <= 500;
+
+
+#Subquery:
+-- Question: Show accounts with revenue higher than the average revenue across all accounts.
+SELECT * FROM accounts WHERE Revenue > (SELECT AVG(Revenue) FROM accounts);
+
+
+-- 2 ------------------------------------------------
+select * from clicks;
+
+#Filter with WHERE:
+-- Question: Show clicks in the 'Technology' industry.
+SELECT * FROM clicks WHERE Industry = 'Health Care';
+
+#Group By:
+-- Question: Count the number of clicks for each industry.
+SELECT Industry, COUNT(*) AS ClickCount FROM clicks GROUP BY Industry;
+
+#Order By:
+-- Question: Display clicks ordered by the creation date in descending order.
+SELECT * FROM clicks ORDER BY Created_On DESC;
+
+#Join Operation:
+-- Question: Combine clicks with corresponding account revenues based on industry.
+SELECT clicks.*, accounts.Revenue FROM clicks
+LEFT JOIN accounts ON clicks.Industry = accounts.Industry;
+
+#limit clause
+-- Question: Display the first 10 clicks.
+SELECT * FROM clicks LIMIT 10;
+
+#like clause
+-- Question: Show clicks with sources containing 'Google'.
+SELECT * FROM clicks WHERE Source LIKE '%Social%';
+
+#Having Clause:
+-- Question: Display industries with more than 5 clicks.
+SELECT Industry, COUNT(*) AS ClickCount FROM clicks GROUP BY Industry HAVING COUNT(*) > 5;
+
+#Case Statement:
+-- Question: Categorize sources as 'Tech' or 'Non-Tech' based on industry.
+SELECT Source, CASE WHEN Industry = 'Technology' THEN 'Tech' ELSE 'Non-Tech' 
+END AS Category FROM clicks;
+
+
+#union statement
+-- Question: Combine clicks with 'Technology' industry and those with 'Finance' industry.
+SELECT * FROM clicks WHERE Industry = 'Technology'
+UNION
+SELECT * FROM clicks WHERE Industry = 'Finance';
+
+#subquery
+-- Question: Show clicks for industries present in the account table.
+SELECT * FROM clicks WHERE Industry IN (SELECT DISTINCT Industry FROM accounts);
+
+
+-- 3 -----------------------------------------------------
+select * from products;
+
+#aggregate function
+-- Question: Find the average sales price of products.
+SELECT AVG(Sales_Price) AS AvgSalesPrice FROM products;
+
+#Filter with WHERE:
+-- Question: Show products with a sales price higher than 100.
+SELECT * FROM products WHERE Sales_Price > 100;
+
+#Order By:
+-- Question: Display products ordered by sales price in descending order.
+SELECT * FROM products ORDER BY Sales_Price DESC;
+
+#Limit Clause:
+-- Question: Display the first 5 products.
+SELECT * FROM products LIMIT 5;
+
+#Like Clause:
+-- Question: Show products with names containing 'Software'.
+SELECT * FROM products WHERE Product LIKE '%GTXBasic%';
+
+#Case Statement:
+-- Question: Categorize products as 'Expensive' or 'Affordable' based on sales price.
+SELECT Product, CASE WHEN Sales_Price > 500 THEN 'Expensive' ELSE 'Affordable' 
+END AS PriceCategory FROM products;
+
+#Union Operator:
+-- Question: Combine products with sales prices higher than 100 and those with 100 or lower.
+SELECT Product, Sales_Price FROM products WHERE Sales_Price > 100
+UNION
+SELECT Product, Sales_Price FROM products WHERE Sales_Price <= 100;
+
+#subquery
+-- Question: Show products with sales prices higher than the average sales price.
+SELECT * FROM products WHERE Sales_Price > (SELECT AVG(Sales_Price) FROM products);
+
+#Null Handling with Coalesce:
+-- Question: Display products with actual sales prices, replacing null values with 0.
+SELECT Product, COALESCE(Sales_Price, 0) AS ActualSalesPrice FROM products;
+
+-- 4 -----------------------------------------------------
+select * from salespipeline;
+
+#Filter with WHERE:
+-- Question: Show sales pipelines in the 'Closed-Won' deal stage.
+SELECT * FROM salespipeline WHERE Deal_Stage = 'Won';
+
+#Group By:
+-- Question: Calculate the average close value for each sales agent.
+SELECT Sales_Agent, AVG(Close_Value) AS AvgCloseValue 
+FROM salespipeline GROUP BY Sales_Agent;
+
+#Order By:
+-- Question: Display sales pipelines ordered by close date in descending order.
+SELECT * FROM salespipeline ORDER BY Close_Date DESC;
+
+#Join Operation:
+-- Question: Combine sales pipelines with corresponding sales team managers based on sales agents.
+SELECT salespipeline.*, sales_team.Manager FROM salespipeline
+LEFT JOIN sales_team ON salespipeline.Sales_Agent = sales_team.Sales_Agent;
+
+#Subquery:
+-- Question: Show sales pipelines with close values higher than the average close value.
+SELECT * FROM salespipeline WHERE Close_Value > (SELECT AVG(Close_Value) 
+FROM salespipeline);
+
+#Aggregate Function with Having Clause:
+-- Question: Count the number of 'Closed-Won' deals for each sales agent and display only those with more than 5 wins.
+SELECT Sales_Agent, COUNT(*) AS LostDeals FROM salespipeline 
+WHERE Deal_Stage = 'Lost' GROUP BY Sales_Agent HAVING COUNT(*) > 5;
+
+#Case Statement:
+-- Question: Categorize deal stages as 'High Value' or 'Low Value' based on close value.
+SELECT Deal_Stage, CASE WHEN Close_Value > 100000 THEN 'High Value' ELSE 'Low Value' 
+END AS ValueCategory FROM salespipeline;
+
+#Union Operator:
+-- Question: Combine accounts with 'Closed-Won' deals and those with 'Closed-Lost' deals.
+SELECT Account, Close_Value FROM salespipeline WHERE Deal_Stage = 'Won'
+UNION
+SELECT Account, Close_Value FROM salespipeline WHERE Deal_Stage = 'Lost';
+
+#Window Function - Rank:
+-- Question: Rank sales pipelines based on close value for each sales agent.
+SELECT Account, Close_Value, RANK() OVER 
+(PARTITION BY Sales_Agent ORDER BY Close_Value DESC) 
+AS RankByValue FROM salespipeline;
+
+
+-- 5 ------------------------------------------------------------
+select * from sales_team;
+
+#Filter with WHERE:
+-- Question: Show sales team members located in the 'East' regional office.
+SELECT * FROM sales_team WHERE Regional_Office = 'East';
+
+#Group By:
+-- Question: Count the size of each sales team managed by different managers.
+SELECT Manager, COUNT(*) AS TeamSize FROM sales_team GROUP BY Manager;
+
+#Order By:
+-- Question: Display sales team members ordered by sales agent name.
+SELECT * FROM sales_team ORDER BY Sales_Agent;
+
+#Join Operation:
+-- Question: Combine sales team members with corresponding sales pipelines based on sales agents.
+SELECT sales_team.*, salespipeline.Close_Value FROM sales_team
+LEFT JOIN salespipeline ON sales_team.Sales_Agent = salespipeline.Sales_Agent;
+
+#Subquery:
+-- Question: Show sales team members with regional offices matching those in the sales pipelines table.
+SELECT * FROM sales_team 
+WHERE Regional_Office IN (SELECT DISTINCT Regional_Office FROM salespipeline);
+
+#Limit Clause:
+-- Question: Display the first 3 sales team members.
+SELECT * FROM sales_team LIMIT 3;
+
+#Like Clause:
+-- Question: Show sales team members with managers having names containing 'John'.
+SELECT * FROM sales_team WHERE Manager LIKE '%Melvin Marxen%';
+
+#Aggregate Function with Having Clause:
+-- Question: Count the number of sales team members for each regional office and display only those with more than 2 members.
+SELECT Regional_Office, COUNT(*) AS TeamSize FROM sales_team 
+GROUP BY Regional_Office HAVING COUNT(*) > 2;
+
+#Case Statement:
+-- Question: Categorize sales team members based on regional offices as 'HQ' or 'Field Office'.
+SELECT Sales_Agent, CASE WHEN Regional_Office = 'HQ' THEN 'HQ' ELSE 'Field Office' 
+END AS OfficeCategory FROM sales_team;
+
+-- --------------------------------------------------------------------
