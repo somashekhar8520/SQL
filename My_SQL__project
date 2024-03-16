@@ -1,0 +1,217 @@
+show databases;
+# Project Objectives
+# 1.	Design and model a relational database to store customer and transaction information
+# 2.	Build and implement the database using MySQL
+# 3.	Write SQL queries to answer key business questions:
+# 5.	Analyze query performance
+
+#1creating new database
+create database company;
+use company;
+
+#2 creating table 1
+
+CREATE TABLE customers (
+  customer_id INT PRIMARY KEY AUTO_INCREMENT,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(100),
+  address VARCHAR(255),
+  city VARCHAR(50),
+  state VARCHAR(20),
+  zipcode VARCHAR(10)
+);
+
+# creating table 2
+
+CREATE TABLE transactions (
+  transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+  customer_id INT,
+  transaction_date DATE,
+  amount DECIMAL(10,2),
+  payment_method ENUM('Cash', 'Card', 'Check'),
+  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+#3 inserting values
+
+INSERT INTO customers (first_name, last_name, email, address, city, state, zipcode)
+VALUES
+  ('John', 'Doe', 'johndoe@example.com', '123 Main St', 'Anytown', 'CA', '98765'),
+  ('Jane', 'Smith', 'janesmith@example.com', '456 Elm St', 'Springfield', 'NY', '12345'),
+  ('Alice', 'Wonderland', 'alicew@example.com', '999 Wonderland Ave', 'Wonderville', 'FL', '44444'),
+  ('Bob', 'Johnson', 'bjohnson@example.com', '555 Oak St', 'Oakville', 'TX', '55555'),
+  ('Mary', 'Williams', 'mwilliams@example.com', '666 Maple St', 'Mapletown', 'PA', '66666'),
+  ('John', 'Doe', 'johndoe@gmail.com', '123 Main St', 'New York', 'NY', '10001'),
+('Jane', 'Smith', 'janesmith@yahoo.com', '456 Elm St', 'Los Angeles', 'CA', '90001'),
+('Mark', 'Johnson', 'markjohnson@hotmail.com', '789 Oak St', 'Chicago', 'IL', '60601'),
+('Sarah', 'Lee', 'sarahlee@gmail.com', '321 Pine St', 'Houston', 'TX', '77001'),
+('David', 'Brown', 'davidbrown@yahoo.com', '654 Maple St', 'Phoenix', 'AZ', '85001'),
+('Emily', 'Davis', 'emilydavis@hotmail.com', '987 Birch St', 'Philadelphia', 'PA', '19101'),
+('Michael', 'Wilson', 'michaelwilson@gmail.com', '246 Cedar St', 'San Antonio', 'TX', '78201'),
+('Samantha', 'Taylor', 'samanthataylor@yahoo.com', '135 Walnut St', 'San Diego', 'CA', '92101'),
+('Kevin', 'Anderson', 'kevinanderson@hotmail.com', '864 Pineapple St', 'Dallas', 'TX', '75201'),
+('Amanda', 'Martin', 'amandamartin@gmail.com', '975 Banana St', 'San Francisco', 'CA', '94101'),
+('Brian', 'Garcia', 'briangarcia@yahoo.com', '531 Orange St', 'Austin', 'TX', '78701'),
+('Jessica', 'Martinez', 'jessicamartinez@hotmail.com', '246 Lemon St', 'Seattle', 'WA', '98101'),
+('William', 'Hernandez', 'williamhernandez@gmail.com', '753 Grape St', 'Denver', 'CO', '80201'),
+('Stephanie', 'Lopez', 'stephanielopez@yahoo.com', '864 Mango St', 'Portland', 'OR', '97201'),
+('Christopher', 'Gonzalez', 'christophergonzalez@hotmail.com', '357 Peach St', 'Boston', 'MA', '02101'),
+('Ashley', 'Perez', 'ashleyperez@gmail.com', '468 Apple St', 'Washington', 'DC', '20001'),
+('Matthew', 'Turner', 'matthewturner@yahoo.com', '579 Cherry St', 'Miami', 'FL', '33101'),
+('Taylor', 'Carter', 'taylorcarter@hotmail.com', '246 Plum St', 'Atlanta', 'GA', '30301'),
+('Elizabeth', 'Mitchell', 'elizabethmitchell@gmail.com', '753 Kiwi St', 'New Orleans', 'LA', '70112'),
+('Nicholas', 'Perkins', 'nicholasperkins@yahoo.com', '357 Grapefruit St', 'Kansas City', 'MO', '64101'),
+('Lauren', 'Roberts', 'laurenroberts@hotmail.com', '468 Watermelon St', 'Las Vegas', 'NV', '89101'),
+('Jacob', 'Phillips', 'jacobphillips@gmail.com', '579 Pineapple St', 'Nashville', 'TN', '37201'),
+('Megan', 'Campbell', 'megancampbell@yahoo.com', '246 Mango St', 'Salt Lake City', 'UT', '84101'),
+('Brandon', 'Parker', 'brandonparker@hotmail.com', '753 Papaya St', 'Orlando', 'FL', '32801'),
+('Rachel', 'Evans', 'rachelevans@gmail.com', '357 Pine St', 'Charlotte', 'NC', '28201'),
+('Tyler', 'Edwards', 'tyleredwards@yahoo.com', '468 Orange St', 'Louisville', 'KY', '40201'),
+('Kayla', 'Collins', 'kaylacollins@hotmail.com', '579 Lemon St', 'Memphis', 'TN', '38101'),
+('Andrew', 'Stewart', 'andrewstewart@gmail.com', '246 Grape St', 'Baltimore', 'MD', '21201'),
+('Hannah', 'Sanchez', 'hannahsanchez@yahoo.com', '753 Cherry St', 'Raleigh', 'NC', '27601'),
+('Joshua', 'Morris', 'joshuamorris@hotmail.com', '357 Plum St', 'Tampa', 'FL', '33601'),
+('Alexis', 'Rogers', 'alexisrogers@gmail.com', '468 Peach St', 'Richmond', 'VA', '23218'),
+('Jacob', 'Phillips', 'jacobphillips@gmail.com', '579 Pineapple St', 'Nashville', 'TN', '37201'),
+('Megan', 'Campbell', 'megancampbell@yahoo.com', '246 Mango St', 'Salt Lake City', 'UT', '84101'),
+('Brandon', 'Parker', 'brandonparker@hotmail.com', '753 Papaya St', 'Orlando', 'FL', '32801'),
+('Rachel', 'Evans', 'rachelevans@gmail.com', '357 Pine St', 'Charlotte', 'NC', '28201'),
+('Tyler', 'Edwards', 'tyleredwards@yahoo.com', '468 Orange St', 'Louisville', 'KY', '40201'),
+('Kayla', 'Collins', 'kaylacollins@hotmail.com', '579 Lemon St', 'Memphis', 'TN', '38101'),
+('Andrew', 'Stewart', 'andrewstewart@gmail.com', '246 Grape St', 'Baltimore', 'MD', '21201'),
+('Hannah', 'Sanchez', 'hannahsanchez@yahoo.com', '753 Cherry St', 'Raleigh', 'NC', '27601'),
+('Joshua', 'Morris', 'joshuamorris@hotmail.com', '357 Plum St', 'Tampa', 'FL', '33601'),
+('Alexis', 'Rogers', 'alexisrogers@gmail.com', '468 Peach St', 'Richmond', 'VA', '23218');
+
+# view table
+select * from customers;
+  
+  
+INSERT INTO transactions (customer_id, transaction_date, amount, payment_method)
+VALUES 
+(1, '2024-01-01', 100.00, 'Card'),
+(2, '2024-01-02', 50.00, 'Cash'),
+(3, '2024-01-03', 75.00, 'Check'),
+(4, '2024-01-04', 125.00, 'Card'),
+(5, '2024-01-05', 150.00, 'Cash'),
+(6, '2024-01-06', 25.00, 'Check'),
+(7, '2024-01-07', 200.00, 'Card'),
+(8, '2024-01-08', 100.00, 'Cash'),
+(9, '2024-01-09', 50.00, 'Check'),
+(10, '2024-01-10', 75.00, 'Card'),
+(11, '2024-01-11', 125.00, 'Cash'),
+(12, '2024-01-12', 150.00, 'Check'),
+(13, '2024-01-13', 25.00, 'Card'),
+(14, '2024-01-14', 200.00, 'Cash'),
+(15, '2024-01-15', 100.00, 'Check'),
+(16, '2024-01-16', 50.00, 'Card'),
+(17, '2024-01-17', 75.00, 'Cash'),
+(18, '2024-01-18', 125.00, 'Check'),
+(19, '2024-01-19', 150.00, 'Card'),
+(20, '2024-01-20', 25.00, 'Cash'),
+(21, '2024-01-21', 200.00, 'Check'),
+(22, '2024-01-22', 100.00, 'Card'),
+(23, '2024-01-23', 50.00, 'Cash'),
+(24, '2024-01-24', 75.00, 'Check'),
+(25, '2024-01-25', 125.00, 'Card'),
+(26, '2024-01-26', 150.00, 'Cash'),
+(27, '2024-01-27', 25.00, 'Check'),
+(28, '2024-01-28', 200.00, 'Card'),
+(29, '2024-01-29', 100.00, 'Cash'),
+(30, '2024-01-30', 50.00, 'Check');
+  
+  # view table2
+  select * from transactions;
+  
+  # Here are 15 business questions for data analysis 
+  # covering various aspects of customer behavior, sales performance, payment trends, and potential insights:
+  
+  # 1.	What is the total number of customers in the database?
+  
+SELECT COUNT(*) AS total_customers
+FROM customers;
+
+  # 2.	What are the top 5 states with the most customers?
+  
+SELECT state, COUNT(*) AS total_customers
+FROM customers
+GROUP BY state
+ORDER BY total_customers DESC
+LIMIT 5;
+ 
+  # 3.	How many customers have made a transaction in the past month?
+  
+  SELECT COUNT(DISTINCT customer_id) AS total_customers
+FROM transactions
+WHERE transaction_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH);
+
+ # 4.	What is the average transaction amount per customer?
+ 
+SELECT AVG(amount) AS average_transaction_amount
+FROM transactions
+GROUP BY customer_id;
+
+# 5.	Which customers have spent the most money overall?
+
+SELECT customer_id, SUM(amount) AS total_spent
+FROM transactions
+GROUP BY customer_id
+ORDER BY total_spent DESC;
+
+# 6.	Identify any customers who haven't made a purchase in over 6 months.
+
+SELECT *
+FROM customers
+WHERE customer_id NOT IN (
+  SELECT DISTINCT customer_id
+  FROM transactions
+  WHERE transaction_date >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+);
+
+# 7.	What are the most common email domains among customers (e.g., Gmail, Yahoo, etc.)?
+
+SELECT SUBSTRING_INDEX(email, '@', -1) AS email_domain, COUNT(*) AS total_customers
+FROM customers
+GROUP BY email_domain
+ORDER BY total_customers DESC;
+
+# 8.	What is the total revenue generated in the past year?
+
+SELECT SUM(amount) AS total_revenue
+FROM transactions
+WHERE transaction_date >= DATE_SUB(NOW(), INTERVAL 1 YEAR);
+  
+# 9.	What is the average monthly revenue?
+
+SELECT AVG(total_revenue) AS average_monthly_revenue
+FROM (
+  SELECT SUM(amount) AS total_revenue
+  FROM transactions
+  WHERE transaction_date >= DATE_SUB(NOW(), INTERVAL 1 YEAR)
+  GROUP BY YEAR(transaction_date), MONTH(transaction_date)
+) AS monthly_revenues;
+
+# 13.	What is the most popular payment method among customers?
+
+SELECT Payment_Method, COUNT(*) as Count
+FROM transactions
+GROUP BY Payment_Method
+ORDER BY Count DESC
+LIMIT 1;
+
+# 14  Question: Which email providers are most common among customers?
+
+SELECT email, COUNT(*) AS num_customers
+FROM customers
+GROUP BY email
+ORDER BY num_customers DESC;
+
+# 15 Question: How many customers reside in each state?
+
+SELECT state, COUNT(*) AS num_customers
+FROM customers
+GROUP BY state
+ORDER BY num_customers DESC;
+
+
